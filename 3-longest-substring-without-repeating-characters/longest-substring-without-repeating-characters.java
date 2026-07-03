@@ -1,24 +1,27 @@
-import java.util.*;
-
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int[] lastIndex = new int[256];
-        Arrays.fill(lastIndex, -1);
+        if (s == null || s.length() == 0) return 0;
 
-        int left = 0;
+        int[] lastSeen = new int[128];
+        for (int i = 0; i < 128; i++) {
+            lastSeen[i] = -1;
+        }
+
         int maxLength = 0;
+        int left = 0;
 
         for (int right = 0; right < s.length(); right++) {
-            char ch = s.charAt(right);
+            char current = s.charAt(right);
 
-            if (lastIndex[ch] >= left) {
-                left = lastIndex[ch] + 1;
+            if (lastSeen[current] >= left) {
+                left = lastSeen[current] + 1;
             }
-
+            lastSeen[current] = right;
             maxLength = Math.max(maxLength, right - left + 1);
-            lastIndex[ch] = right;
+
         }
 
         return maxLength;
+        
     }
 }
